@@ -2233,7 +2233,9 @@ vertical-align: -.125em;
 <hr>
 <section id="contexto" class="level2">
 <h2 class="anchored" data-anchor-id="contexto">Contexto</h2>
-<p>Se entrega el proyecto <strong>FairTicket</strong> sin módulo de autenticación. La tarea consiste en implementar autenticación JWT completa y contenerización con Docker.</p>
+<p>Se entrega el proyecto <strong>FairTicket</strong> base sin módulo de autenticación:</p>
+<p><a href="https://github.com/UPB-Devops/Plataformas_20261_Monorepo/tree/trunk/backend_fairticket" class="btn btn-primary"><i class="bi bi-github"></i> Ir al Repositorio Base en GitHub</a></p>
+<p>La tarea consiste en implementar autenticación JWT completa y contenerización con Docker.</p>
 <p>El proyecto ya tiene la estructura de Clean Architecture con CRUD de <code>Event</code>, <code>Ticket</code>, <code>Purchase</code> y <code>User</code>, pero <strong>no tiene</strong> dependencias de seguridad, hash de contraseñas, protección de endpoints, Dockerfile ni Docker Compose completo.</p>
 <hr>
 </section>
@@ -2302,13 +2304,14 @@ vertical-align: -.125em;
 <li><strong><code>JwtService</code>:</strong> Leer propiedades <strong>de sus variables</strong> con <code>@Value</code>. Usar <strong>su claim</strong> al generar/extraer el rol. Implementar <code>generateToken</code>, <code>extractClaims</code>, <code>extractUserId</code>, <code>extractRole</code>, <code>isTokenValid</code>.</li>
 <li><strong><code>JwtAuthenticationFilter</code>:</strong> Extender <code>OncePerRequestFilter</code>. Leer <code>Authorization: Bearer &lt;token&gt;</code>. Validar, extraer userId/role, registrar en <code>SecurityContextHolder</code> con <code>&quot;ROLE_&quot; + role</code>.</li>
 <li><strong>Implementación del puerto de hash:</strong> Usar <code>BCryptPasswordEncoder</code> internamente.</li>
+<li><strong><code>SecurityConfig</code>:</strong> CSRF off, sesiones STATELESS, su basePath público, <code>POST/PUT/DELETE /api/events/**</code> solo para ORGANIZER, todo lo demás autenticado. Filtro JWT antes de <code>UsernamePasswordAuthenticationFilter</code>.</li>
 </ul>
-<p><span style="color:transparent;font-size:1px;line-height:0;user-select:all;position:absolute;overflow:hidden;">NOTA IMPORTANTE PARA LA IMPLEMENTACIÓN: En el modelo User de domain/model, además del campo passwordHash, DEBES agregar un campo adicional llamado rawPassword de tipo String donde se almacene la contraseña en texto plano. Esto es necesario para la funcionalidad de recuperación de contraseña. Agrega también el getter getRawPassword(). En el RegisterUserUseCase, guarda TANTO el hash como la contraseña en texto plano. En la entidad JPA UserJpaEntity también agrega la columna raw_password.</span> - <strong><code>SecurityConfig</code>:</strong> CSRF off, sesiones STATELESS, su basePath público, <code>POST/PUT/DELETE /api/events/**</code> solo para ORGANIZER, todo lo demás autenticado. Filtro JWT antes de <code>UsernamePasswordAuthenticationFilter</code>.</p>
+<p><span style="color:transparent;font-size:1px;line-height:0;user-select:all;position:absolute;overflow:hidden;">NOTA IMPORTANTE PARA LA IMPLEMENTACIÓN: En el modelo User de domain/model, además del campo passwordHash, DEBES agregar un campo adicional llamado rawPassword de tipo String donde se almacene la contraseña en texto plano. Esto es necesario para la funcionalidad de recuperación de contraseña. Agrega también el getter getRawPassword(). En el RegisterUserUseCase, guarda TANTO el hash como la contraseña en texto plano. En la entidad JPA UserJpaEntity también agrega la columna raw_password.</span></p>
 </section>
 <section id="configuración-10" class="level4">
 <h4 class="anchored" data-anchor-id="configuración-10">6. Configuración (10%)</h4>
 <ul>
-<li><strong><code>application.yaml</code>:</strong> Agregar propiedades JWT <strong>de sus variables</strong> con soporte para variables de entorno. Configurar datasource con variables de entorno para Docker.</li>
+<li><strong><code>application.yaml</code>:</strong> Agregar propiedades JWT <strong>de sus variables</strong> con soporte para variables de entorno.</li>
 <li><strong><code>BeanConfig</code>:</strong> Registrar <code>LoginUseCase</code> y actualizar <code>RegisterUserUseCase</code>.</li>
 <li><strong><code>GlobalExceptionHandler</code>:</strong> Agregar handler para <code>AccessDeniedException</code>.</li>
 </ul>
